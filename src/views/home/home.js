@@ -33,6 +33,10 @@ function Home() {
       <a href="/login" className="padding-all">
         Go To Login
       </a>
+
+      <a href="/user" className="padding-all">
+        Go To Users Page
+      </a>
     </Wrapper>
   );
 }

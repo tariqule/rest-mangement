@@ -1,0 +1,8 @@
+.center {
+    display: grid;
+    place-items: center;
+  }
+
+  .padding-all {
+  margin: 10px
+  }

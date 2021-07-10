@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../home/components /Header";
 import router from "next/router";
+import { Context } from "../../context/context";
+import { useDispatch } from "react-redux";
+import { userSlice } from "../../store/slices/user";
 
 function Login() {
+  const { email, setEmail, password, setPassword } = useContext(Context);
+
   //hooks
 
   //store states
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  // const [email, setEmail] = React.useState("");
+  // const [password, setPassword] = React.useState("");
 
   //target => alert when rendered for the first timers
 
@@ -26,12 +31,18 @@ function Login() {
     console.log(event.target.value);
     setPassword(event.target.value);
   };
+
+  const dispatch = useDispatch();
+
   const onClickSubmit = () => {
-    if (email === "email@gmail.com" && password === "password") {
-      router.push("/about");
-    } else {
-      alert("Denied");
-    }
+    dispatch(userSlice.actions.storeUserName({ email, password }));
+
+    router.push("/user");
+    // if (email === "email@gmail.com" && password === "password") {
+    //   router.push("/about");
+    // } else {
+    //   alert("Denied");
+    // }
   };
   return (
     <div className="center">

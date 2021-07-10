@@ -1,5 +1,7 @@
 import React from "react";
 import axios from "axios";
+import { selectUser } from "../../store/slices/user";
+import { useSelector } from "react-redux";
 
 // XML and JSON
 /**
@@ -20,8 +22,11 @@ function Users() {
   const postUser = async (para) => {
     return await axios.post("https://jsonplaceholder.typicode.com/users", para);
   };
+  const { name } = useSelector(selectUser);
+
   //initial render
   React.useEffect(() => {
+    alert(name.email);
     fetchUser()
       .then((res) => {
         console.log(res.data);

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
-import { selectUser } from "../../store/slices/user";
-import { useSelector } from "react-redux";
+import { fetchUser, selectUser } from "../../store/slices/user";
+import { useDispatch, useSelector } from "react-redux";
 
 // XML and JSON
 /**
@@ -15,24 +15,28 @@ function Users() {
   const [users, setUsers] = React.useState();
   const [userName, setUserName] = React.useState("");
   ///get request
-  const fetchUser = async () => {
-    return await axios.get("https://jsonplaceholder.typicode.com/users");
-  };
+  // const fetchUser = async () => {
+  //   return await axios.get("https://jsonplaceholder.typicode.com/users");
+  // };
 
   const postUser = async (para) => {
     return await axios.post("https://jsonplaceholder.typicode.com/users", para);
   };
   const { name } = useSelector(selectUser);
 
+  const dispatch = useDispatch();
   //initial render
   React.useEffect(() => {
     alert(name.email);
-    fetchUser()
-      .then((res) => {
-        console.log(res.data);
-        setUsers(res.data);
-      })
-      .catch((err) => console.log(err));
+
+    dispatch(fetchUser());
+
+    // fetchUser()
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setUsers(res.data);
+    //   })
+    //   .catch((err) => console.log(err));
   }, []);
 
   const userNameChange = (event) => {

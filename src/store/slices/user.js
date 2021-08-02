@@ -9,9 +9,18 @@ export const fetchUser = createAsyncThunk("user/fecvh", async () => {
   return fetch;
 });
 
+export const fetchNew = createAsyncThunk("user/NewKey", async () => {
+  const fetch = axios
+    .get("https://jsonplaceholder.typicode.com/posts")
+    .then((user) => user.data);
+  console.log("fetch", fetch);
+  return fetch;
+});
+
 const userState = {
   name: "",
-  das: [],
+  userData: [],
+  newData: [],
 };
 
 export const userSlice = createSlice({
@@ -28,9 +37,22 @@ export const userSlice = createSlice({
     },
     [fetchUser.fulfilled]: (state, action) => {
       console.log("ACTION fulfilled==>", action);
+      state.userData = action.payload;
     },
     [fetchUser.rejected]: (state, action) => {
       console.log("ACTION rejected==>", action);
+    },
+
+    [fetchNew.pending]: (state, action) => {
+      console.log("New Action Pending ==>", action);
+    },
+    [fetchNew.fulfilled]: (state, action) => {
+      //   console.log("New Action fulfilled==>", action.payload);
+
+      state.newData = action.payload;
+    },
+    [fetchNew.rejected]: (state, action) => {
+      console.log("New Action rejected==>", action);
     },
   },
 });

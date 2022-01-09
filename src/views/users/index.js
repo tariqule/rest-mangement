@@ -1,6 +1,11 @@
 import React from "react";
 import axios from "axios";
-import { fetchUser, fetchNew, selectUser } from "../../store/slices/user";
+import {
+  fetchUser,
+  fetchNew,
+  selectUser,
+  fetchComm,
+} from "../../store/slices/user";
 import { useDispatch, useSelector } from "react-redux";
 
 // XML and JSON
@@ -14,23 +19,49 @@ import { useDispatch, useSelector } from "react-redux";
 function Users() {
   const [users, setUsers] = React.useState();
   const [userName, setUserName] = React.useState("");
+  const [ownApis, setOwnApis] = React.useState();
+
+  // const [comments, setComments] = React.useState();
+
+  // const fetchComm = async () => {
+  //   return await axios.get("https://jsonplaceholder.typicode.com/comments");
+  // };
   ///get request
   // const fetchUser = async () => {
   //   return await axios.get("https://jsonplaceholder.typicode.com/users");
   // };
 
+  // Fetch this and map by name and put name in h2 tag
+  // https://jsonplaceholder.typicode.com/comments
+
+  const ownApi = async () => {
+    return await axios.get("http://localhost:2323/users");
+  };
   const postUser = async (para) => {
     return await axios.post("https://jsonplaceholder.typicode.com/users", para);
   };
-  const { name, userData, newData } = useSelector(selectUser);
+
+  // React.useEffect(() => {
+  //   fetchComm()
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setComments(res.data);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+  const { name, userData, newData, comments } = useSelector(selectUser);
 
   const dispatch = useDispatch();
   //initial render
   React.useEffect(() => {
-    alert(name.email);
-
+    // alert(name.email);
+    ownApi().then((res) => {
+      setOwnApis(res.data);
+    });
     dispatch(fetchUser());
     dispatch(fetchNew());
+    dispatch(fetchComm());
 
     // fetchUser()
     //   .then((res) => {
@@ -66,9 +97,8 @@ function Users() {
 
   return (
     <div>
-      User
       {userData?.map((user, index) => (
-        <h1>
+        <h1 style={{ display: "flex", justifyContent: "center" }}>
           name: {user.name} username: {user.username}
         </h1>
       ))}
@@ -77,12 +107,6 @@ function Users() {
           title: {eachPost.title} body: {eachPost.body}
         </h1>
       ))}
-      <input
-        type="text"
-        placeholder="Enter Username"
-        onChange={userNameChange}
-      />
-      <button onClick={seeSubmit}>Submit</button>
     </div>
   );
 }
